@@ -1,22 +1,16 @@
-import { Component, OnInit } from '@angular/core';
-import { DataService } from './data.service';
+import { Component, OnInit, ViewEncapsulation } from '@angular/core';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  encapsulation: ViewEncapsulation.None
 })
 export class AppComponent implements OnInit {
   title = 'Employee Management';
-  employees: [] = [];
 
-  constructor(private dataService: DataService) { }
+  constructor() { }
 
   ngOnInit(): void {
-    console.log('init');
-    this.dataService.getEmployees().subscribe(res => {
-      console.log(res);
-      this.employees = res.data
-    });
   }
 }
