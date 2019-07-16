@@ -4,4 +4,5 @@ import { Injectable } from '@angular/core';
 export class Configuration {
     public server = 'http://localhost:3000';
     public apiUrl = '/employee';
+    public mockServer = true;
 }

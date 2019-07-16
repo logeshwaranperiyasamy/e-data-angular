@@ -4,7 +4,7 @@ import { MatPaginator } from '@angular/material/paginator';
 
 import { DataService } from '../../data.service';
 import { EmployeeComponent } from '../employee/employee.component';
-import { MatDialog } from '@angular/material';
+import { MatDialog, MatSnackBar } from '@angular/material';
 import { Employee } from '../employee/employee.interface';
 
 @Component({
@@ -19,7 +19,7 @@ export class HomeComponent implements OnInit {
   displayedColumns: string[];
   columnNames: any[];
 
-  constructor(private dataService: DataService, public dialog: MatDialog) { }
+  constructor(private dataService: DataService, public dialog: MatDialog, private snackBar: MatSnackBar) { }
 
   @ViewChild(MatPaginator, { static: true }) paginator: MatPaginator;
 
@@ -74,10 +74,40 @@ export class HomeComponent implements OnInit {
   }
 
   onRemove(data: Employee) {
-    this.dataService.removeEmployee(data).subscribe(res => this.refreshList(res));
+    this.dataService.removeEmployee(data).subscribe(res => {
+      this.snackBar.open('Removed Successfully.', 'x');
+      this.refreshList(res);
+    });
+  }
+
+  onAdd() {
+    const dialogRef = this.dialog.open(EmployeeComponent, {
+      width: '235px',
+      disableClose: true,
+      data: {
+        id: Math.floor(Math.random() * 999999),
+        name: ''
+      }
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result) {
+        this.addEmployee(result);
+      }
+    });
+  }
+
+  addEmployee(data: Employee) {
+    this.dataService.addEmployee(data).subscribe(res => {
+      this.snackBar.open('Added Successfully.', 'x');
+      this.refreshList(res);
+    });
   }
 
   updateEmployee(data: Employee) {
-    this.dataService.updateEmployee(data).subscribe(res => this.refreshList(res));
+    this.dataService.updateEmployee(data).subscribe(res => {
+      this.snackBar.open('Updated Successfully.', 'x');
+      this.refreshList(res);
+    });
   }
 }

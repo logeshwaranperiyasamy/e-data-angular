@@ -1,4 +1,11 @@
-table {
+div {
+  table {
     width: 100%;
   }
-  
+
+  .mat-toolbar-row {
+    display: grid;
+    grid-template-columns: auto auto;
+    background-color: white;
+  }
+}

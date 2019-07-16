@@ -1,12 +1,12 @@
-<h2 class="text-center">Welcome to Employee Management</h2>
+<h2 class="text-center">Employee Database</h2>
 <div class="mat-elevation-z8">
-  <table mat-table [dataSource]="dataSource" *ngIf="dataSource.data.length !== 0">
-    <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames; let i = index">
+  <table mat-table [dataSource]="dataSource">
+    <ng-container matColumnDef="{{column.id}}" *ngFor="let column of columnNames">
       <mat-header-cell *matHeaderCellDef> {{column.value}} </mat-header-cell>
-      <mat-cell *matCellDef="let element">
+      <mat-cell *matCellDef="let element; let i = index;">
         <span *ngIf="column.id == 'position'">{{i+1}}</span>
-        <span *ngIf="column.id !== 'action'">{{element[column.id]}}</span>
-        <div *ngIf="column.id === 'action'">
+        <span *ngIf="column.id == 'name' || column.id == 'id'">{{element[column.id]}}</span>
+        <div *ngIf="column.id == 'action'">
           <button mat-icon-button [matMenuTriggerFor]="actionMenu" [matMenuTriggerData]="{ employeeInfo: element }">
             <mat-icon [color]="'primary'">more_horiz</mat-icon>
           </button>
@@ -14,10 +14,17 @@
       </mat-cell>
     </ng-container>
     <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns;"></mat-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
   </table>
-
-  <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+  <mat-toolbar>
+    <mat-toolbar-row>
+      <a mat-raised-button mat-icon-button color="primary" (click)="onAdd()" matTooltip="Add Employee"
+        matTooltipPosition="above">
+        <mat-icon>add</mat-icon>
+      </a>
+      <mat-paginator [pageSizeOptions]="[5, 10, 20]" showFirstLastButtons></mat-paginator>
+    </mat-toolbar-row>
+  </mat-toolbar>
 
   <mat-menu #actionMenu="matMenu">
     <ng-template matMenuContent let-employeeInfo="employeeInfo">
